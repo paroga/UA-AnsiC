@@ -13,29 +13,10 @@
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
-cmake_minimum_required(VERSION 2.8.11)
+set(UATESTCLIENT_SOURCES
+    uatestclient.c
+)
 
-project(uastack C)
 
-option(UASTACK_ENABLE_TESTING "Build the executables to test the project" OFF)
-option(UASTACK_GENERATE_COVERAGE "Build the project with coverage output" OFF)
-
-if (MSVC)
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /Wall /wd4255 /wd4820")
-else ()
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fvisibility=hidden -W -Wall")
-
-    if (UASTACK_GENERATE_COVERAGE)
-        set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} --coverage")
-    endif ()
-endif ()
-
-find_package(OpenSSL REQUIRED)
-
-add_subdirectory(Stack)
-add_subdirectory(AnsiCSample)
-
-if (UASTACK_ENABLE_TESTING)
-    enable_testing()
-    add_subdirectory(Stack/test/unittest)
-endif ()
+add_executable(uatestclient ${UATESTCLIENT_SOURCES})
+target_link_libraries(uatestclient uastack)
